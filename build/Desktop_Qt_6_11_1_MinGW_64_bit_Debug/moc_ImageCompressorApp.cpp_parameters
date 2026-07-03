@@ -1,0 +1,6 @@
+-D$<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
+-DWIN32
+-o
+C:/2semestr_practica/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/moc_ImageCompressorApp.cpp
+C:/2semestr_practica/ImageCompressorApp.h
+-DWIN32

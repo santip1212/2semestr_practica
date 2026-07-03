@@ -1,0 +1,7 @@
+# ninja log v7
+9	111	8048071279980244	moc_ImageCompressorApp.cpp	aa29d60e1364d1fe
+9	111	8048071279980244	C:/2semestr_practica/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/moc_ImageCompressorApp.cpp	aa29d60e1364d1fe
+115	1960	8048071280121177	CMakeFiles/ImageCompressor.dir/main.cpp.obj	f10946aa092df582
+142	2082	8048071280382949	CMakeFiles/ImageCompressor.dir/moc_ImageCompressorApp.cpp.obj	d69f9206aec51b72
+129	2217	8048071280223630	CMakeFiles/ImageCompressor.dir/ImageCompressorApp.cpp.obj	447b65a137fe6e89
+2218	2494	8048071301145805	ImageCompressor.exe	b342a4485a4cc4c5

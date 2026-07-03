@@ -1,0 +1,7 @@
+# ninja log v7
+36	358	8048039088170890	moc_ImageCompressorApp.cpp	954267eae715c0d9
+36	358	8048039088170890	C:/2semestr_practica/build/moc_ImageCompressorApp.cpp	954267eae715c0d9
+359	2159	8048039088230284	CMakeFiles/ImageCompressor.dir/main.cpp.obj	1fce9dfb8a3bc5f4
+392	2201	8048039088600281	CMakeFiles/ImageCompressor.dir/moc_ImageCompressorApp.cpp.obj	e094f9bde5c64fa2
+375	2378	8048039088466971	CMakeFiles/ImageCompressor.dir/ImageCompressorApp.cpp.obj	d0113778419b4d30
+2378	2709	8048039108494364	ImageCompressor.exe	8e27d454fea61c5e
