@@ -1,0 +1,20 @@
+[
+{
+  "directory": "C:/2semestr_practica/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -isystem C:/msys64/ucrt64/include/qt6/QtWidgets -isystem C:/msys64/ucrt64/include/qt6 -isystem C:/msys64/ucrt64/include/qt6/QtCore -isystem C:/msys64/ucrt64/share/qt6/mkspecs/win32-g++ -isystem C:/msys64/ucrt64/include/qt6/QtGui -g -std=gnu++17 -o CMakeFiles\\ImageCompressor.dir\\main.cpp.obj -c C:\\2semestr_practica\\main.cpp",
+  "file": "C:/2semestr_practica/main.cpp",
+  "output": "C:/2semestr_practica/build/CMakeFiles/ImageCompressor.dir/main.cpp.obj"
+},
+{
+  "directory": "C:/2semestr_practica/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -isystem C:/msys64/ucrt64/include/qt6/QtWidgets -isystem C:/msys64/ucrt64/include/qt6 -isystem C:/msys64/ucrt64/include/qt6/QtCore -isystem C:/msys64/ucrt64/share/qt6/mkspecs/win32-g++ -isystem C:/msys64/ucrt64/include/qt6/QtGui -g -std=gnu++17 -o CMakeFiles\\ImageCompressor.dir\\ImageCompressorApp.cpp.obj -c C:\\2semestr_practica\\ImageCompressorApp.cpp",
+  "file": "C:/2semestr_practica/ImageCompressorApp.cpp",
+  "output": "C:/2semestr_practica/build/CMakeFiles/ImageCompressor.dir/ImageCompressorApp.cpp.obj"
+},
+{
+  "directory": "C:/2semestr_practica/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -isystem C:/msys64/ucrt64/include/qt6/QtWidgets -isystem C:/msys64/ucrt64/include/qt6 -isystem C:/msys64/ucrt64/include/qt6/QtCore -isystem C:/msys64/ucrt64/share/qt6/mkspecs/win32-g++ -isystem C:/msys64/ucrt64/include/qt6/QtGui -g -std=gnu++17 -o CMakeFiles\\ImageCompressor.dir\\moc_ImageCompressorApp.cpp.obj -c C:\\2semestr_practica\\build\\moc_ImageCompressorApp.cpp",
+  "file": "C:/2semestr_practica/build/moc_ImageCompressorApp.cpp",
+  "output": "C:/2semestr_practica/build/CMakeFiles/ImageCompressor.dir/moc_ImageCompressorApp.cpp.obj"
+}
+]
