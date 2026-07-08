@@ -10,25 +10,21 @@ ImageCompressorApp::ImageCompressorApp(QWidget *parent)
 
 ImageCompressorApp::~ImageCompressorApp()
 {
-}
+} 
  
 void ImageCompressorApp::setupUI()
 {
-    // Настройка главного окна
-    setWindowTitle("Image Compressor - Preview");
+    setWindowTitle("Image Compressor - Preview"); // настрока главного окна
     setMinimumSize(800, 600);
     
-    // Создание центрального виджета
-    centralWidget = new QWidget(this);
+    centralWidget = new QWidget(this); // центальный виджет
     setCentralWidget(centralWidget);
     
-    // Главный вертикальный макет
     mainLayout = new QVBoxLayout(centralWidget);
     mainLayout->setSpacing(10);
     mainLayout->setContentsMargins(10, 10, 10, 10);
     
-    // Создание кнопки
-    openButton = new QPushButton("Открыть изображение (BMP/TIFF)", this);
+    openButton = new QPushButton("Открыть изображение (BMP/TIFF)", this); // создание кнопки
     openButton->setMinimumHeight(40);
     openButton->setStyleSheet(
         "QPushButton {"
@@ -49,7 +45,6 @@ void ImageCompressorApp::setupUI()
     
     connect(openButton, &QPushButton::clicked, this, &ImageCompressorApp::openImage);
     
-    // Макет для кнопки
     buttonLayout = new QHBoxLayout();
     buttonLayout->addStretch();
     buttonLayout->addWidget(openButton);
@@ -57,8 +52,7 @@ void ImageCompressorApp::setupUI()
     
     mainLayout->addLayout(buttonLayout);
     
-    // Создание области прокрутки для изображения
-    scrollArea = new QScrollArea(this);
+    scrollArea = new QScrollArea(this); // прокрутка изображения
     scrollArea->setWidgetResizable(true);
     scrollArea->setAlignment(Qt::AlignCenter);
     scrollArea->setStyleSheet(
@@ -69,7 +63,7 @@ void ImageCompressorApp::setupUI()
         "}"
     );
     
-    // Создание метки для отображения изображения
+
     imageLabel = new QLabel(this);
     imageLabel->setAlignment(Qt::AlignCenter);
     imageLabel->setStyleSheet(
@@ -84,15 +78,13 @@ void ImageCompressorApp::setupUI()
     
     scrollArea->setWidget(imageLabel);
     mainLayout->addWidget(scrollArea);
-    
-    // Установка размера окна
-    resize(900, 700);
+
+    resize(900, 700); // для окна
 }
 
 void ImageCompressorApp::openImage()
 {
-    // Открытие диалога выбора файла
-    QString filePath = QFileDialog::getOpenFileName(
+    QString filePath = QFileDialog::getOpenFileName( // выбор файла
         this,
         "Выберите изображение",
         QDir::homePath(),
@@ -106,8 +98,8 @@ void ImageCompressorApp::openImage()
 
 void ImageCompressorApp::loadImage(const QString &filePath)
 {
-    // Проверка формата файла
-    if (!isImageFormatSupported(filePath)) {
+
+    if (!isImageFormatSupported(filePath)) { // проверка формата
         QMessageBox::warning(
             this,
             "Ошибка формата",
@@ -117,7 +109,6 @@ void ImageCompressorApp::loadImage(const QString &filePath)
         return;
     }
     
-    // Загрузка изображения
     QImage loadedImage;
     if (!loadedImage.load(filePath)) {
         QMessageBox::warning(
@@ -129,14 +120,12 @@ void ImageCompressorApp::loadImage(const QString &filePath)
         return;
     }
     
-    // Сохранение текущего изображения
-    currentImage = loadedImage;
+
+    currentImage = loadedImage; // сохраняем текущее изображение
     currentFilePath = filePath;
     
-    // Отображение изображения
-    displayImage(loadedImage);
+    displayImage(loadedImage); // выводим
     
-    // Обновление заголовка окна
     QFileInfo fileInfo(filePath);
     setWindowTitle(QString("Image Compressor - Preview [%1]").arg(fileInfo.fileName()));
 }
@@ -149,13 +138,10 @@ void ImageCompressorApp::displayImage(const QImage &image)
         return;
     }
     
-    // Получение размеров изображения
-    QSize imageSize = image.size();
+    QSize imageSize = image.size(); // размеры изображений
     QSize viewportSize = scrollArea->viewport()->size();
     
-    // масштабируем с сохранением пропорций
-    if (imageSize.width() > viewportSize.width() || imageSize.height() > viewportSize.height()) {
-        // Масштабирование изображения, чтобы оно поместилось в область просмотра
+    if (imageSize.width() > viewportSize.width() || imageSize.height() > viewportSize.height()) { // масштабирование
         QPixmap pixmap = QPixmap::fromImage(image);
         QPixmap scaledPixmap = pixmap.scaled(
             viewportSize,
@@ -164,11 +150,9 @@ void ImageCompressorApp::displayImage(const QImage &image)
         );
         imageLabel->setPixmap(scaledPixmap);
     } else {
-        // Если изображение меньше или равно области просмотра, отображаем в оригинальном размере
-        imageLabel->setPixmap(QPixmap::fromImage(image));
+        imageLabel->setPixmap(QPixmap::fromImage(image)); // в ориг масштабе, если оно входит 
     }
     
-    // Обновление размера метки в соответствии с изображением
     imageLabel->adjustSize();
 }
 
@@ -177,13 +161,11 @@ bool ImageCompressorApp::isImageFormatSupported(const QString &filePath)
     QFileInfo fileInfo(filePath);
     QString suffix = fileInfo.suffix().toLower();
 
-    // Проверка поддерживаемых расширений
-    if (suffix == "bmp" || suffix == "tiff" || suffix == "tif") {
+    if (suffix == "bmp" || suffix == "tiff" || suffix == "tif") { // поддерживается ли формат
         return true;
     }
 
-    // Если расширение не совпадает, пробуем проверить через QImageReader
-    QImageReader reader(filePath);
+    QImageReader reader(filePath); // проверка через QImageReader
     QString format = reader.format().toLower();
     return (format == "bmp" || format == "tiff");
 }
