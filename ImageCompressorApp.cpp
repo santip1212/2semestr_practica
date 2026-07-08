@@ -159,7 +159,7 @@ void ImageCompressorApp::displayImage(const QImage &image)
 bool ImageCompressorApp::isImageFormatSupported(const QString &filePath)
 {
     QFileInfo fileInfo(filePath); 
-    QString suffix = fileInfo.suffix().toLower();
+    QString suffix = fileInfo.suffix().toLower(); 
 
     if (suffix == "bmp" || suffix == "tiff" || suffix == "tif") { // поддерживается ли формат
         return true;

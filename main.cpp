@@ -5,7 +5,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     
-    ImageCompressorApp window;
+    ImageCompressorApp window; 
     window.show(); 
     
     return app.exec(); 

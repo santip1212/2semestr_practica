@@ -8,8 +8,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
 set(SOURCES
-    main.cpp
-    ImageCompressorApp.cpp 
+    main.cpp 
+    ImageCompressorApp.cpp  
 ) 
  
 set(HEADERS

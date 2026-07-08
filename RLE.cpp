@@ -67,7 +67,7 @@ void saveBMP(const std::string& filename, // сохранение распако
     
     for (int i = 0; i < width * height; ++i) {
         rgb.push_back(r[i]);
-        rgb.push_back(g[i]);
+        rgb.push_back(g[i]); 
         rgb.push_back(b[i]);
     } 
     
