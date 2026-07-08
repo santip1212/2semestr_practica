@@ -33,7 +33,7 @@ private:
     QPushButton *openButton;
     QScrollArea *scrollArea;
     QLabel *imageLabel;
-    
+     
     QImage currentImage;
     QString currentFilePath;
     

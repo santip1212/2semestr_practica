@@ -5,7 +5,7 @@
 #include<iostream>
 #include<vector>
 #include <fstream>
-std::vector<unsigned char> compress(const std::vector<unsigned char>& channel){
+std::vector<unsigned char> compress(const std::vector<unsigned char>& channel){ // rle сжатие одного канала
     std::vector<unsigned char> compressed;
     int size = channel.size();
     for(int i = 0; i < size;){
@@ -20,7 +20,7 @@ std::vector<unsigned char> compress(const std::vector<unsigned char>& channel){
     }
     return compressed;
 }
-std::vector<unsigned char> decompress(const std::vector<unsigned char>& compressed) {
+std::vector<unsigned char> decompress(const std::vector<unsigned char>& compressed) { // рапсаковка одного канала
     std::vector<unsigned char> decompressed;
     for (int i = 0; i < (int)compressed.size(); i += 2) {
         int count = compressed[i];
@@ -32,7 +32,7 @@ std::vector<unsigned char> decompress(const std::vector<unsigned char>& compress
     }
     return decompressed;
 }
-void saveCompressed(const std::string& filename,
+void saveCompressed(const std::string& filename, // сохрание сжатого файла
                     const std::vector<unsigned char>& r,
                     const std::vector<unsigned char>& g,
                     const std::vector<unsigned char>& b,
@@ -43,22 +43,20 @@ void saveCompressed(const std::string& filename,
     auto cb = compress(b);
     
     std::ofstream out(filename, std::ios::binary);
-    
-    // Заголовок: сигнатура (2) + размеры (8) + длины каналов (12)
+
     unsigned short sig = 0x524C;
     out.write((char*)&sig, 2);
     out.write((char*)&width, 4);
-    out.write((char*)&height, 4);
+    out.write((char*)&height, 4);  
     
     int lens[3] = {(int)cr.size(), (int)cg.size(), (int)cb.size()};
     out.write((char*)lens, 12);
     
-    // Данные
     out.write((char*)cr.data(), cr.size());
     out.write((char*)cg.data(), cg.size());
     out.write((char*)cb.data(), cb.size());
 }
-void saveBMP(const std::string& filename,
+void saveBMP(const std::string& filename, // сохранение распакованого bmp
              const std::vector<unsigned char>& r,
              const std::vector<unsigned char>& g,
              const std::vector<unsigned char>& b,
