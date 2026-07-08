@@ -782,7 +782,7 @@ static int stbi_write_hdr_core(stbi__write_context *s, int x, int y, int comp, f
       STBIW_FREE(scratch);
       return 1;
    } 
-}
+} 
 
 STBIWDEF int stbi_write_hdr_to_func(stbi_write_func *func, void *context, int x, int y, int comp, const float *data)
 { 

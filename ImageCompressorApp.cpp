@@ -164,7 +164,7 @@ bool ImageCompressorApp::isImageFormatSupported(const QString &filePath)
     if (suffix == "bmp" || suffix == "tiff" || suffix == "tif") { // поддерживается ли формат
         return true;
     }
-
+ 
     QImageReader reader(filePath); // проверка через QImageReader
     QString format = reader.format().toLower();
     return (format == "bmp" || format == "tiff");
