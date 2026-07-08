@@ -24,7 +24,7 @@ public:
 
 private slots:
     void openImage();
-    void loadImage(const QString &filePath);
+    void loadImage(const QString &filePath); 
 
 private:
     QWidget *centralWidget;

@@ -781,7 +781,7 @@ static int stbi_write_hdr_core(stbi__write_context *s, int x, int y, int comp, f
          stbiw__write_hdr_scanline(s, x, comp, scratch, data + comp*x*(stbi__flip_vertically_on_write ? y-1-i : i));
       STBIW_FREE(scratch);
       return 1;
-   }
+   } 
 }
 
 STBIWDEF int stbi_write_hdr_to_func(stbi_write_func *func, void *context, int x, int y, int comp, const float *data)
