@@ -1,3 +1,0 @@
-C:/2semestr_practica/CMakeFiles/RLECompressor.dir
-C:/2semestr_practica/CMakeFiles/edit_cache.dir
-C:/2semestr_practica/CMakeFiles/rebuild_cache.dir
