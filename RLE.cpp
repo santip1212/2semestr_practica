@@ -69,7 +69,7 @@ void saveBMP(const std::string& filename, // сохранение распако
         rgb.push_back(r[i]);
         rgb.push_back(g[i]);
         rgb.push_back(b[i]);
-    }
+    } 
     
     stbi_write_bmp(filename.c_str(), width, height, 3, rgb.data());
 }

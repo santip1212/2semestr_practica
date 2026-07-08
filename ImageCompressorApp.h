@@ -28,7 +28,7 @@ private slots:
 
 private:
     QWidget *centralWidget;
-    QVBoxLayout *mainLayout;
+    QVBoxLayout *mainLayout; 
     QHBoxLayout *buttonLayout;
     QPushButton *openButton;
     QScrollArea *scrollArea;
