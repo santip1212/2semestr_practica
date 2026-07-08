@@ -12,7 +12,7 @@ set(SOURCES
     ImageCompressorApp.cpp  
 ) 
  
-set(HEADERS
+set(HEADERS 
     ImageCompressorApp.h
 )
 

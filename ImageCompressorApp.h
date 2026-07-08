@@ -31,7 +31,7 @@ private:
     QVBoxLayout *mainLayout; 
     QHBoxLayout *buttonLayout;
     QPushButton *openButton;
-    QScrollArea *scrollArea;
+    QScrollArea *scrollArea; 
     QLabel *imageLabel;
      
     QImage currentImage;
