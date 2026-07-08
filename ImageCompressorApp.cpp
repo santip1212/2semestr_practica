@@ -11,7 +11,7 @@ ImageCompressorApp::ImageCompressorApp(QWidget *parent)
 ImageCompressorApp::~ImageCompressorApp()
 {
 }
-
+ 
 void ImageCompressorApp::setupUI()
 {
     // Настройка главного окна
@@ -153,7 +153,7 @@ void ImageCompressorApp::displayImage(const QImage &image)
     QSize imageSize = image.size();
     QSize viewportSize = scrollArea->viewport()->size();
     
-    // Если изображение больше области просмотра, масштабируем с сохранением пропорций
+    // масштабируем с сохранением пропорций
     if (imageSize.width() > viewportSize.width() || imageSize.height() > viewportSize.height()) {
         // Масштабирование изображения, чтобы оно поместилось в область просмотра
         QPixmap pixmap = QPixmap::fromImage(image);
