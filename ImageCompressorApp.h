@@ -11,7 +11,7 @@
 #include <QPixmap>
 #include <QImage>
 #include <QString>
-#include <QSize>
+#include <QSize> 
 #include <QDebug>
 
 class ImageCompressorApp: public QMainWindow

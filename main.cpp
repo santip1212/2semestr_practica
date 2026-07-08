@@ -8,5 +8,5 @@ int main(int argc, char *argv[])
     ImageCompressorApp window;
     window.show();
     
-    return app.exec();
+    return app.exec(); 
 }
