@@ -1,13 +1,11 @@
 #include "ImageUtils.h"
-#include "stb_image.h"
 #include "stb_image_wrapper.h"
-#include "stb_image_write.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
-
-#include "stb_image_write.h"
+#include <iostream>
+#include <ctime>
 
 std::vector<uint8_t> saveJPEGToMemory(
     const std::vector<unsigned char>& data,
@@ -17,24 +15,30 @@ std::vector<uint8_t> saveJPEGToMemory(
 ) {
     std::vector<uint8_t> result;
     
-    // Создаем временный файл
-    char tempFilename[256];
+    // Проверка размера данных
+    if (data.size() != static_cast<size_t>(width * height * 3)) {
+        std::cerr << "ERROR: data size mismatch! Expected " << width * height * 3 << ", got " << data.size() << std::endl;
+        return result;
+    }
+    
+    // Создаем имя временного файла с расширением .jpg
+    char tempFilename[512];
+    
     #ifdef _WIN32
-    // Для Windows используем tmpnam_s
-    char* tempName = nullptr;
-    if (tmpnam_s(tempFilename, sizeof(tempFilename)) == 0) {
-        // OK
+    char tempPath[MAX_PATH];
+    DWORD pathLen = GetTempPathA(MAX_PATH, tempPath);
+    if (pathLen > 0 && pathLen < MAX_PATH) {
+        static int counter = 0;
+        snprintf(tempFilename, sizeof(tempFilename), "%simage_temp_%d_%d.jpg", 
+                 tempPath, static_cast<int>(time(nullptr)), counter++);
     } else {
-        // fallback
-        strcpy_s(tempFilename, sizeof(tempFilename), "temp_image.jpg");
+        snprintf(tempFilename, sizeof(tempFilename), "image_temp_%d.jpg", static_cast<int>(time(nullptr)));
     }
     #else
-    strcpy(tempFilename, "/tmp/image_temp.jpg");
+    snprintf(tempFilename, sizeof(tempFilename), "/tmp/image_temp_%d.jpg", static_cast<int>(time(nullptr)));
     #endif
     
-    // Сохраняем в JPEG через файл
     if (stbi_write_jpg(tempFilename, width, height, 3, data.data(), quality)) {
-        // Читаем файл в память
         std::ifstream file(tempFilename, std::ios::binary | std::ios::ate);
         if (file.is_open()) {
             size_t size = file.tellg();
@@ -43,23 +47,24 @@ std::vector<uint8_t> saveJPEGToMemory(
             file.read(reinterpret_cast<char*>(result.data()), size);
             file.close();
         }
-        // Удаляем временный файл
         remove(tempFilename);
+    } else {
+        std::cerr << "stbi_write_jpg FAILED!" << std::endl;
     }
     
     return result;
 }
 
-std::vector<unsigned char> loadJPEGFromMemory(
-    const std::vector<uint8_t>& jpegData,
+std::vector<unsigned char> loadImageFromMemory(
+    const std::vector<uint8_t>& imageData,
     int& width,
     int& height,
     int& channels
 ) {
     int w, h, c;
     unsigned char* data = stbi_load_from_memory(
-        jpegData.data(),
-        static_cast<int>(jpegData.size()),
+        imageData.data(),
+        static_cast<int>(imageData.size()),
         &w, &h, &c, 3
     );
     
@@ -75,7 +80,7 @@ std::vector<unsigned char> loadJPEGFromMemory(
     channels = 3;
     
     std::vector<unsigned char> result(data, data + w * h * 3);
-    free(data);  // stbi_image_free - используем free напрямую
+    free(data);
     
     return result;
 }

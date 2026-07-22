@@ -2,6 +2,7 @@
 #include "ImageUtils.h"
 #include <vector>
 #include <cstring>
+#include <iostream>
 
 std::vector<unsigned char> RLECompressor::compressChannel(const std::vector<unsigned char>& channel) {
     std::vector<unsigned char> compressed;
@@ -72,6 +73,5 @@ std::vector<uint8_t> RLECompressor::decompress(
     int& height,
     int& channels
 ) {
-    std::vector<unsigned char> result = loadJPEGFromMemory(compressedData, width, height, channels);
-    return result;
+    return loadImageFromMemory(compressedData, width, height, channels);
 }
