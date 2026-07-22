@@ -4,11 +4,9 @@
 #include <unordered_map>
 #include <string>
 
-// LZW сжатие одного канала
 std::vector<unsigned char> compressLZW(const std::vector<unsigned char>& channel) {
     std::vector<unsigned char> compressed;
     
-    // Инициализация словаря
     std::unordered_map<std::string, int> dictionary;
     for (int i = 0; i < 256; ++i) {
         dictionary[std::string(1, (unsigned char)i)] = i;
@@ -23,43 +21,35 @@ std::vector<unsigned char> compressLZW(const std::vector<unsigned char>& channel
         if (dictionary.find(next) != dictionary.end()) {
             current = next;
         } else {
-            // Добавляем код в выходной поток
             outputCodes.push_back(dictionary[current]);
-            // Добавляем новую строку в словарь
             dictionary[next] = dictSize++;
             current = std::string(1, (char)c);
         }
     }
     
-    // Добавляем последний код
     if (!current.empty()) {
         outputCodes.push_back(dictionary[current]);
     }
     
-    // Упаковка кодов в байты (каждый код по 2 байта)
     for (int code : outputCodes) {
-        compressed.push_back((code >> 8) & 0xFF);  // старший байт
-        compressed.push_back(code & 0xFF);         // младший байт
+        compressed.push_back((code >> 8) & 0xFF);
+        compressed.push_back(code & 0xFF);
     }
     
     return compressed;
 }
 
-// LZW распаковка одного канала
 std::vector<unsigned char> decompressLZW(const std::vector<unsigned char>& compressed) {
     std::vector<unsigned char> decompressed;
     
     if (compressed.size() < 2) return decompressed;
     
-    // Инициализация словаря
     std::unordered_map<int, std::string> dictionary;
     for (int i = 0; i < 256; ++i) {
         dictionary[i] = std::string(1, (unsigned char)i);
     }
     
     int dictSize = 256;
-    
-    // Распаковка кодов из байтов
     std::vector<int> codes;
     for (size_t i = 0; i < compressed.size(); i += 2) {
         if (i + 1 < compressed.size()) {
@@ -84,7 +74,6 @@ std::vector<unsigned char> decompressLZW(const std::vector<unsigned char>& compr
         } else if (code == dictSize) {
             entry = current + current[0];
         } else {
-            // Ошибка: неверный код
             break;
         }
         
@@ -92,7 +81,6 @@ std::vector<unsigned char> decompressLZW(const std::vector<unsigned char>& compr
             decompressed.push_back(c);
         }
         
-        // Добавляем новую запись в словарь
         dictionary[dictSize++] = current + entry[0];
         current = entry;
     }
@@ -100,7 +88,6 @@ std::vector<unsigned char> decompressLZW(const std::vector<unsigned char>& compr
     return decompressed;
 }
 
-// Сохранение сжатого файла
 void saveCompressedLZW(const std::string& filename,
                        const std::vector<unsigned char>& r,
                        const std::vector<unsigned char>& g,
@@ -113,7 +100,6 @@ void saveCompressedLZW(const std::string& filename,
     
     std::ofstream out(filename, std::ios::binary);
     
-    // Сигнатура для LZW (LZ)
     unsigned short sig = 0x4C5A;
     out.write((char*)&sig, 2);
     out.write((char*)&width, 4);
@@ -127,7 +113,6 @@ void saveCompressedLZW(const std::string& filename,
     out.write((char*)cb.data(), cb.size());
 }
 
-// Загрузка и распаковка LZW файла
 void loadAndDecompressLZW(const std::string& filename, 
                           std::vector<unsigned char>& r,
                           std::vector<unsigned char>& g,
@@ -160,23 +145,4 @@ void loadAndDecompressLZW(const std::string& filename,
     r = decompressLZW(cr);
     g = decompressLZW(cg);
     b = decompressLZW(cb);
-}
-
-// Сохранение BMP файла
-void saveBMP(const std::string& filename,
-             const std::vector<unsigned char>& r,
-             const std::vector<unsigned char>& g,
-             const std::vector<unsigned char>& b,
-             int width, int height) {
-    
-    std::vector<unsigned char> rgb;
-    rgb.reserve(width * height * 3);
-    
-    for (int i = 0; i < width * height; ++i) {
-        rgb.push_back(r[i]);
-        rgb.push_back(g[i]); 
-        rgb.push_back(b[i]);
-    }  
-    
-    stbi_write_bmp(filename.c_str(), width, height, 3, rgb.data());
 }
