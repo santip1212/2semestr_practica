@@ -4,6 +4,7 @@
 #include <queue>
 #include <string>
 #include <cstring>
+#include <iostream>
 
 struct HuffmanNode {
     unsigned char ch;
@@ -185,6 +186,5 @@ std::vector<uint8_t> HuffmanCompressor::decompress(
     int& height,
     int& channels
 ) {
-    std::vector<unsigned char> result = loadJPEGFromMemory(compressedData, width, height, channels);
-    return result;
+    return loadImageFromMemory(compressedData, width, height, channels);
 }

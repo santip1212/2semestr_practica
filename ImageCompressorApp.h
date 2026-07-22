@@ -72,5 +72,3 @@ private:
     QString formatSize(size_t bytes);
     ICompressor* getCompressor(const QString& name);
 };
-
-void showResultWindow(const QImage& image, const QString& info);

@@ -3,6 +3,7 @@
 #include "ImageUtils.h"
 #include <vector>
 #include <cstring>
+#include <iostream>
 
 DCTCompressor::DCTCompressor(int quality) : quality(quality) {}
 
@@ -57,6 +58,5 @@ std::vector<uint8_t> DCTCompressor::decompress(
     int& height,
     int& channels
 ) {
-    std::vector<unsigned char> result = loadJPEGFromMemory(compressedData, width, height, channels);
-    return result;
+    return loadImageFromMemory(compressedData, width, height, channels);
 }

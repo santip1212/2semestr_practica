@@ -1,10 +1,10 @@
 #include "ImageCompressorApp.h"
-#include "stb_image.h"
-#include "stb_image_write.h"
+#include "stb_image_wrapper.h"
 #include <QFileInfo>
 #include <QDir>
 #include <QCoreApplication>
 #include <QImageReader>
+#include <QElapsedTimer>
 #include <iostream>
 #include <fstream>
 
@@ -22,6 +22,12 @@ void ImageCompressorApp::setupUI() {
     setWindowTitle("Image Compressor");
     setMinimumSize(800, 600);
     
+    setStyleSheet(
+        "QMainWindow {"
+        "   background-color: #f5f5f5;"
+        "}"
+    );
+    
     centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
     
@@ -29,10 +35,8 @@ void ImageCompressorApp::setupUI() {
     mainLayout->setSpacing(10);
     mainLayout->setContentsMargins(10, 10, 10, 10);
     
-    // Верхняя панель
     topLayout = new QHBoxLayout();
     
-    // Кнопка открытия
     openButton = new QPushButton("Открыть изображение", this);
     openButton->setMinimumHeight(35);
     openButton->setStyleSheet(
@@ -54,8 +58,8 @@ void ImageCompressorApp::setupUI() {
     connect(openButton, &QPushButton::clicked, this, &ImageCompressorApp::openImage);
     topLayout->addWidget(openButton);
     
-    // Выбор алгоритма
     QLabel* algorithmLabel = new QLabel("Алгоритм:", this);
+    algorithmLabel->setStyleSheet("color: #000000; font-weight: bold;");
     topLayout->addWidget(algorithmLabel);
     
     algorithmComboBox = new QComboBox(this);
@@ -71,14 +75,18 @@ void ImageCompressorApp::setupUI() {
         "   border-radius: 4px;"
         "   padding: 5px 10px;"
         "   background: white;"
+        "   color: #000000;"
         "}"
         "QComboBox::drop-down {"
         "   border: none;"
         "}"
+        "QComboBox QAbstractItemView {"
+        "   color: #000000;"
+        "   background-color: white;"
+        "}"
     );
     topLayout->addWidget(algorithmComboBox);
     
-    // Кнопка сжатия
     compressButton = new QPushButton("Сжать", this);
     compressButton->setMinimumHeight(35);
     compressButton->setStyleSheet(
@@ -100,7 +108,6 @@ void ImageCompressorApp::setupUI() {
     connect(compressButton, &QPushButton::clicked, this, &ImageCompressorApp::compressImage);
     topLayout->addWidget(compressButton);
     
-    // Кнопка сохранения
     saveButton = new QPushButton("Сохранить результат", this);
     saveButton->setMinimumHeight(35);
     saveButton->setEnabled(false);
@@ -121,6 +128,7 @@ void ImageCompressorApp::setupUI() {
         "}"
         "QPushButton:disabled {"
         "   background-color: #cccccc;"
+        "   color: #666666;"
         "}"
     );
     connect(saveButton, &QPushButton::clicked, this, &ImageCompressorApp::saveResult);
@@ -129,7 +137,6 @@ void ImageCompressorApp::setupUI() {
     topLayout->addStretch();
     mainLayout->addLayout(topLayout);
     
-    // Информационная панель
     infoText = new QTextEdit(this);
     infoText->setReadOnly(true);
     infoText->setMaximumHeight(100);
@@ -137,15 +144,16 @@ void ImageCompressorApp::setupUI() {
         "QTextEdit {"
         "   border: 1px solid #cccccc;"
         "   border-radius: 5px;"
-        "   background-color: #fafafa;"
+        "   background-color: #ffffff;"
+        "   color: #000000;"
         "   font-family: monospace;"
         "   font-size: 12px;"
+        "   padding: 8px;"
         "}"
     );
     infoText->setText("Загрузите изображение для начала работы...");
     mainLayout->addWidget(infoText);
     
-    // Область изображения
     scrollArea = new QScrollArea(this);
     scrollArea->setWidgetResizable(true);
     scrollArea->setAlignment(Qt::AlignCenter);
@@ -164,6 +172,8 @@ void ImageCompressorApp::setupUI() {
         "   background-color: #f0f0f0;"
         "   border: 1px solid #dddddd;"
         "   border-radius: 3px;"
+        "   color: #000000;"
+        "   font-size: 14px;"
         "}"
     );
     imageLabel->setMinimumSize(400, 300);
@@ -189,7 +199,6 @@ void ImageCompressorApp::openImage() {
 }
 
 void ImageCompressorApp::loadImage(const QString &filePath) {
-    // Проверка формата через расширение
     QFileInfo fileInfo(filePath);
     QString suffix = fileInfo.suffix().toLower();
     
@@ -228,7 +237,6 @@ void ImageCompressorApp::loadImage(const QString &filePath) {
     QFileInfo info(filePath);
     setWindowTitle(QString("Image Compressor - [%1]").arg(info.fileName()));
     
-    // Информация об изображении
     updateInfo(QString("Загружено: %1 (%2 x %3 px)")
                .arg(info.fileName())
                .arg(currentImage.width())
@@ -280,11 +288,11 @@ QString ImageCompressorApp::formatSize(size_t bytes) {
 }
 
 ICompressor* ImageCompressorApp::getCompressor(const QString& name) {
-    if (name == "RLE (без потерь)") return &rleCompressor;
-    if (name == "Huffman (без потерь)") return &huffmanCompressor;
-    if (name == "LZW (без потерь)") return &lzwCompressor;
-    if (name == "DCT (с потерями)") return &dctCompressor;
-    if (name == "Fractal (с потерями)") return &fractalCompressor;
+    if (name.startsWith("RLE")) return &rleCompressor;
+    if (name.startsWith("Huffman")) return &huffmanCompressor;
+    if (name.startsWith("LZW")) return &lzwCompressor;
+    if (name.startsWith("DCT")) return &dctCompressor;
+    if (name.startsWith("Fractal")) return &fractalCompressor;
     return nullptr;
 }
 
@@ -301,8 +309,12 @@ void ImageCompressorApp::compressImage() {
         return;
     }
     
-    // Конвертация QImage в RGB
     QImage rgbImage = currentImage.convertToFormat(QImage::Format_RGB888);
+    if (rgbImage.isNull()) {
+        QMessageBox::warning(this, "Ошибка", "Не удалось конвертировать изображение в RGB!");
+        return;
+    }
+    
     int width = rgbImage.width();
     int height = rgbImage.height();
     int channels = 3;
@@ -310,9 +322,11 @@ void ImageCompressorApp::compressImage() {
     std::vector<uint8_t> imageData(width * height * channels);
     memcpy(imageData.data(), rgbImage.bits(), imageData.size());
     
-    // Сжатие
     updateInfo("Выполняется сжатие алгоритмом " + algorithmName + "...");
     QCoreApplication::processEvents();
+    
+    QElapsedTimer timer;
+    timer.start();
     
     currentCompressedData = compressor->compress(imageData, width, height, channels);
     
@@ -322,7 +336,6 @@ void ImageCompressorApp::compressImage() {
         return;
     }
     
-    // Декомпрессия
     int decWidth, decHeight, decChannels;
     currentDecompressedData = compressor->decompress(currentCompressedData, decWidth, decHeight, decChannels);
     
@@ -337,12 +350,10 @@ void ImageCompressorApp::compressImage() {
     currentChannels = decChannels;
     currentAlgorithmName = algorithmName;
     
-    // Вычисление размеров
     size_t originalSize = imageData.size();
     size_t compressedSize = currentCompressedData.size();
     double ratio = static_cast<double>(originalSize) / compressedSize;
     
-    // Формирование информации
     QString info = QString(
         "Алгоритм: %1\n"
         "Исходный размер: %2\n"
@@ -356,7 +367,6 @@ void ImageCompressorApp::compressImage() {
     updateInfo(info);
     saveButton->setEnabled(true);
     
-    // Отображение результата в отдельном окне
     QImage resultImage(currentDecompressedData.data(), decWidth, decHeight, decWidth * decChannels, QImage::Format_RGB888);
     ResultWindow* resultWindow = new ResultWindow(resultImage, info, this);
     resultWindow->setAttribute(Qt::WA_DeleteOnClose);
@@ -368,18 +378,15 @@ void ImageCompressorApp::saveResult() {
         return;
     }
     
-    // Получаем путь к папке bin
     QString binPath = QCoreApplication::applicationDirPath();
     QDir binDir(binPath);
     
-    // Создаем имя файла
     QFileInfo fileInfo(currentFilePath);
     QString baseName = fileInfo.completeBaseName();
     QString algorithmName = algorithmComboBox->currentText().split(" ").first();
     QString fileName = baseName + "_" + algorithmName + ".jpg";
     QString filePath = binDir.filePath(fileName);
     
-    // Сохраняем JPEG
     QImage resultImage(currentDecompressedData.data(), currentWidth, currentHeight, currentWidth * currentChannels, QImage::Format_RGB888);
     
     if (resultImage.save(filePath, "JPG", 80)) {

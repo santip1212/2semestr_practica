@@ -2,6 +2,7 @@
 #include "ImageUtils.h"
 #include <vector>
 #include <cstring>
+#include <iostream>
 
 FractalCompressorAdapter::FractalCompressorAdapter(
     int rangeSize, int domainSize, int step
@@ -37,6 +38,5 @@ std::vector<uint8_t> FractalCompressorAdapter::decompress(
     int& height,
     int& channels
 ) {
-    std::vector<unsigned char> result = loadJPEGFromMemory(compressedData, width, height, channels);
-    return result;
+    return loadImageFromMemory(compressedData, width, height, channels);
 }
