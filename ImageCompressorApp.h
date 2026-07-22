@@ -11,11 +11,19 @@
 #include <QPixmap>
 #include <QImage>
 #include <QString>
-#include <QSize> 
-#include <QDebug>
+#include <QComboBox>
+#include <QTextEdit>
+#include <QSize>
 
-class ImageCompressorApp: public QMainWindow
-{
+#include "ICompressor.h"
+#include "RLECompressor.h"
+#include "HuffmanCompressor.h"
+#include "LZWCompressor.h"
+#include "DCTCompressor.h"
+#include "FractalCompressorAdapter.h"
+#include "ResultWindow.h"
+
+class ImageCompressorApp : public QMainWindow {
     Q_OBJECT
 
 public:
@@ -24,20 +32,45 @@ public:
 
 private slots:
     void openImage();
-    void loadImage(const QString &filePath); 
+    void loadImage(const QString &filePath);
+    void compressImage();
+    void saveResult();
 
 private:
-    QWidget *centralWidget;
-    QVBoxLayout *mainLayout; 
-    QHBoxLayout *buttonLayout;
-    QPushButton *openButton;
-    QScrollArea *scrollArea; 
-    QLabel *imageLabel;
-     
+    // UI элементы
+    QWidget* centralWidget;
+    QVBoxLayout* mainLayout;
+    QHBoxLayout* topLayout;
+    QPushButton* openButton;
+    QComboBox* algorithmComboBox;
+    QPushButton* compressButton;
+    QPushButton* saveButton;
+    QScrollArea* scrollArea;
+    QLabel* imageLabel;
+    QTextEdit* infoText;
+    
+    // Данные
     QImage currentImage;
     QString currentFilePath;
+    std::vector<uint8_t> currentCompressedData;
+    std::vector<uint8_t> currentDecompressedData;
+    int currentWidth, currentHeight, currentChannels;
+    QString currentAlgorithmName;
+    ICompressor* currentCompressor;
+    
+    // Компрессоры
+    RLECompressor rleCompressor;
+    HuffmanCompressor huffmanCompressor;
+    LZWCompressor lzwCompressor;
+    DCTCompressor dctCompressor;
+    FractalCompressorAdapter fractalCompressor;
     
     void setupUI();
     void displayImage(const QImage &image);
     bool isImageFormatSupported(const QString &filePath);
+    void updateInfo(const QString& text);
+    QString formatSize(size_t bytes);
+    ICompressor* getCompressor(const QString& name);
 };
+
+void showResultWindow(const QImage& image, const QString& info);

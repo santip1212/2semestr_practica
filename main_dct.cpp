@@ -5,7 +5,7 @@
 #include <vector>
 #include <fstream>
 
-int main() {
+int main_l() {
     int width, height, channels;
     unsigned char* data = stbi_load("leto.bmp", &width, &height, &channels, 3);
     

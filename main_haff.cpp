@@ -198,8 +198,3 @@ void decompressImage(const std::string& inputFile, const std::string& outputFile
     stbi_write_png(outputFile.c_str(), width, height, 3, imageData.data(), width * 3);
     std::cout << outputFile << std::endl;
 }
-
-int main(int argc, char* argv[]) {
-        compressImage("leto.bmp", "leto_compressed.huff");
-    return 0;
-}
