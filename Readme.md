@@ -4,7 +4,7 @@
 Нужно перейти по ссылке https://github.com/santip1212/2semestr_practica/releases/tag/v1.0. Далее нужно скачать папку с проектом 
 (ImageCompressor_Portable.zip), после чего распаковать её. Затем запустить image_compressor.exe .
 
-№2
+№2 
 
 Перед установкой лучше заранее завести аккаунт в Qt. 
 Установить Qt по ссылке: https://www.qt.io/download-qt-installer-oss (у меня получилось скачать только с VPN).
